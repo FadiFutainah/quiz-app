@@ -35,7 +35,7 @@ class AuthenticationRepository {
     }
   }
 
-  Future<void> logInWithEmailAndPassword({
+  Future<void> logIn({
     required String email,
     required String password,
   }) async {
