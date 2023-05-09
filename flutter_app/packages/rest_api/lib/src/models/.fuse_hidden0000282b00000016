@@ -1,0 +1,44 @@
+import 'dart:io';
+
+import 'package:http_interceptor/http/http_methods.dart';
+import 'package:rest_api/src/data/token.dart';
+
+import 'enums.dart';
+
+class RequestEntity {
+  bool? encode;
+  bool? decode;
+  final bool sendToken;
+  Method? type;
+  final TokenType tokenType;
+  bool? retryWithRefreshToken;
+  Map<String, String>? headers;
+  final Map<String, dynamic>? body;
+  final Map<String, dynamic>? queryParameters;
+
+  RequestEntity({
+    this.body,
+    this.type,
+    this.headers,
+    this.encode,
+    this.decode,
+    this.queryParameters,
+    this.sendToken = false,
+    this.tokenType = TokenType.access,
+    this.retryWithRefreshToken = false,
+  }) {
+    if (sendToken) _addTokenHeader();
+  }
+
+  Future<void> _addTokenHeader() async {
+    String? token = await Token().accessToken;
+    headers![HttpHeaders.authorizationHeader] = '${tokenType.name} $token';
+  }
+
+  void updateNullValues(RequestEntity baseRequest) {
+    encode ??= baseRequest.encode;
+    decode ??= baseRequest.decode;
+    headers ??= baseRequest.headers;
+    retryWithRefreshToken ??= retryWithRefreshToken;
+  }
+}

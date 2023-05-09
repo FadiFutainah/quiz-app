@@ -1,0 +1,12 @@
+import 'package:http_interceptor/http_interceptor.dart';
+import 'package:rest_api/src/data/token.dart';
+
+class ExpiredTokenRetryPolicy extends RetryPolicy {
+  @override
+  Future<bool> shouldAttemptRetryOnResponse(ResponseData response) async {
+    if (response.statusCode == 401) {
+      return await Token().refreshAccessToken();
+    }
+    return false;
+  }
+}
