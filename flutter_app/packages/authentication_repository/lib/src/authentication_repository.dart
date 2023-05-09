@@ -1,7 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'exceptions/exceptions.dart';
-import 'models/user.dart';
 
 class AuthenticationRepository {
   AuthenticationRepository({
@@ -10,16 +11,18 @@ class AuthenticationRepository {
 
   final firebase_auth.FirebaseAuth _firebaseAuth;
 
-  Stream<User> get user {
-    return _firebaseAuth.authStateChanges().map((firebaseUser) {
-      final user = firebaseUser == null ? User.empty : firebaseUser.toUser;
-      return user;
-    });
-  }
+  bool isAuthenticated() =>
+      firebase_auth.FirebaseAuth.instance.currentUser != null;
 
-  User get currentUser {
-    // return _cache.read<User>(key: userCacheKey) ?? User.empty;
-    return User.empty;
+  Future<String> getRole() async {
+    User? user = firebase_auth.FirebaseAuth.instance.currentUser;
+
+    var userInfo = await FirebaseFirestore.instance
+        .collection('user')
+        .doc(user!.uid)
+        .get();
+    var data = userInfo.data();
+    return data!['role'];
   }
 
   Future<void> signUp({required String email, required String password}) async {
@@ -28,6 +31,9 @@ class AuthenticationRepository {
         email: email,
         password: password,
       );
+      User? user = firebase_auth.FirebaseAuth.instance.currentUser;
+      CollectionReference users = FirebaseFirestore.instance.collection('user');
+      await users.doc(user!.uid).set({'email': user.email, 'role': 'user'});
     } on firebase_auth.FirebaseAuthException catch (e) {
       throw SignUpWithEmailAndPasswordFailure.fromCode(e.code);
     } catch (_) {
@@ -59,11 +65,5 @@ class AuthenticationRepository {
     } catch (_) {
       throw LogOutFailure();
     }
-  }
-}
-
-extension on firebase_auth.User {
-  User get toUser {
-    return User(id: uid, email: email, name: displayName);
   }
 }
