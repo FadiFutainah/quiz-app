@@ -1,0 +1,5 @@
+import 'package:flutter_app/application/models/score_model.dart';
+
+class UserScoreModel {
+  List<ScoreModel> scores;
+}

@@ -242,6 +242,17 @@ class _$_Question implements _Question {
       this,
     );
   }
+
+  @override
+  Question decodeFromBase64() => Question(
+        question: Base64Decoder.decode(question!),
+        category: Base64Decoder.decode(category!),
+        correctAnswer: Base64Decoder.decode(correctAnswer!),
+        difficulty: Base64Decoder.decode(difficulty!),
+        type: Base64Decoder.decode(type!),
+        incorrectAnswers:
+            incorrectAnswers!.map((e) => Base64Decoder.decode(e)).toList(),
+      );
 }
 
 abstract class _Question implements Question {

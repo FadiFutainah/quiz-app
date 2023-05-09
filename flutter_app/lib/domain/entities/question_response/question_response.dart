@@ -1,18 +1,18 @@
 import 'package:flutter_app/domain/entities/question/question.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'response.freezed.dart';
-part 'response.g.dart';
+part 'question_response.freezed.dart';
+part 'question_response.g.dart';
 
 @freezed
-class ResponseEntity with _$ResponseEntity {
+class QuestionResponse with _$QuestionResponse {
   // ignore: invalid_annotation_target
   @JsonSerializable(explicitToJson: true, fieldRename: FieldRename.snake)
-  factory ResponseEntity({
+  const factory QuestionResponse({
     int? responseCode,
     List<Question>? results,
-  }) = _ResponseEntity;
+  }) = _QuestionResponse;
 
-  factory ResponseEntity.fromJson(Map<String, dynamic> json) =>
-      _$ResponseEntityFromJson(json);
+  factory QuestionResponse.fromJson(Map<String, dynamic> json) =>
+      _$QuestionResponseFromJson(json);
 }

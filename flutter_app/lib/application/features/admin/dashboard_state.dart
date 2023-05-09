@@ -9,6 +9,8 @@ class DashboardInitial extends DashboardState {}
 
 class DashboardLoading extends DashboardState {}
 
+class SignedOutSuccessfuly extends DashboardState {}
+
 class DashboardFailed extends DashboardState {
   DashboardFailed({required this.message});
 

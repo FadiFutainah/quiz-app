@@ -9,6 +9,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  authentication_repository:
+    path: packages/authentication_repository
+  rest_api: 
+    path: packages/rest_api
+  
   cupertino_icons: ^1.0.2
   get_it: ^7.2.0
   flutter_screenutil: ^5.7.0
@@ -22,6 +27,8 @@ dependencies:
   firebase_core: ^2.11.0
   cloud_firestore: ^4.6.0
   go_router: ^7.0.0
+  firebase_auth: ^4.5.0
+  flutter_spinbox: ^0.13.0
 
 dev_dependencies:
   flutter_test:

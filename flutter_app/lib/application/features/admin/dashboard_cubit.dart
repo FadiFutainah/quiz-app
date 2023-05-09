@@ -1,3 +1,4 @@
+import 'package:authentication_repository/authentication_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_app/domain/entities/user_score/firebase_user.dart';
 import 'package:flutter_app/domain/repositories/dashboard_repository.dart';
@@ -20,6 +21,16 @@ class DashboardCubit extends Cubit<DashboardState> {
       List<FirebaseUser> data = await repository.getUsers();
 
       emit(DashboardSuccess(data: data));
+    } on Exception catch (e) {
+      emit(DashboardFailed(message: e.toString()));
+    }
+  }
+
+  Future signOut() async {
+    try {
+      emit(DashboardLoading());
+      await AuthenticationRepository().logOut();
+      emit(SignedOutSuccessfuly());
     } on Exception catch (e) {
       emit(DashboardFailed(message: e.toString()));
     }

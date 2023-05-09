@@ -1,3 +1,4 @@
+import 'package:flutter_app/domain/utils/base64_decoder.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'question.freezed.dart';
@@ -18,4 +19,14 @@ class Question with _$Question {
 
   factory Question.fromJson(Map<String, dynamic> json) =>
       _$QuestionFromJson(json);
+
+  Question decodeFromBase64() => Question(
+        question: Base64Decoder.decode(question!),
+        category: Base64Decoder.decode(category!),
+        correctAnswer: Base64Decoder.decode(correctAnswer!),
+        difficulty: Base64Decoder.decode(difficulty!),
+        type: Base64Decoder.decode(type!),
+        incorrectAnswers:
+            incorrectAnswers!.map((e) => Base64Decoder.decode(e)).toList(),
+      );
 }
